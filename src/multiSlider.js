@@ -1,3 +1,7 @@
+// MultiSlider, multiple sliders in the same row.
+// Version 0.1
+// (c) 2012 [Ippon Technologies](www.ippon.fr)
+// Released under the MIT license
 (function ($) {
 
   function MultiSlider(element, options) {
