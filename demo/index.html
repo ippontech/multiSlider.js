@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="content-type" content="text/html;charset=utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="chrome=1">
+
+  <title>Multi Slider</title>
+
+  <link href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.18/themes/base/jquery-ui.css" rel="stylesheet"/>
+  <link href="css/style.css" rel="stylesheet"/>
+  
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7/jquery.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.18/jquery-ui.min.js"></script>
+  
+  <script src="../src/multiSlider.js"></script>
+  <script src="js/script.js"></script>
+
+</head>
+<body>
+
+  <a href="http://github.com/ippontech/multiSlider.js"><img style="position:absolute;top:0;left:0;border:0;" src="https://a248.e.akamai.net/assets.github.com/img/5d21241b64dc708fcbb701f68f72f41e9f1fadd6/687474703a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f6c6566745f7265645f6161303030302e706e67" alt="Fork me on GitHub"></a>
+
+  <div id="header">
+    <div class="container">
+      <a href="" class="brand">multiSlider.js</a>
+    </div>
+    <div class="container">
+      <p>A jQuery plugin allowing various sliders in the same track. By <a href="http://blog.ippon.fr" class="ippon">Ippon</a>.</p>
+    </div>
+  </div>
+
+  <div id="content" class="container">
+    
+    <div class="demo-unit">
+      <h2>Basic example</h2>
+
+<pre><code>$('#demo-1').multiSlider({total: 2});
+</code></pre>
+
+      <div id="demo-1" class="multi-slider"></div>
+    </div>
+
+    <div class="demo-unit">
+      <h2>Change total number of sliders</h2>
+
+<pre><code>var demo2Slider = $('#demo-2').multiSlider({total: 1});
+
+$('#demo-2-select').change(function () {
+  demo2Slider.option('total', $(this).val());
+});
+</code></pre>
+
+      <select id="demo-2-select">
+        <option value="1">1</option>
+        <option value="2">2</option>
+        <option value="3">3</option>
+      </select>
+
+      <div id="demo-2" class="multi-slider"></div>
+    </div>
+
+  </div>
+</body>
+</html>
