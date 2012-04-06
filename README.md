@@ -1,7 +1,9 @@
 # MultiSlider
 
-Little jQuery plugin allowing various sliders in the same line.
+Little jQuery plugin allowing various sliders in the same track.
 Based on [jQuery UI slider][1].
+
+Check out the demo at http://ippontech.github.com/multiSlider.js/demo/.
 
 ## Requirements
 
