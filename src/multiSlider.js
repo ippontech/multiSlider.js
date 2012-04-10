@@ -1,4 +1,4 @@
-// MultiSlider, multiple sliders in the same row.
+// MultiSlider.js, multiple sliders in the same row.
 // Version 0.1
 // (c) 2012 [Ippon Technologies](www.ippon.fr)
 // Released under the MIT license
@@ -8,9 +8,24 @@
     this.element = element;
     this.options = options;
     this.sliders = this._newSliders();
+    this.values = this._getValues();
   }
 
   MultiSlider.prototype = {
+
+    _getValues: function () {
+      var values = [];
+      for (var i = this.sliders.length - 1; i >= 0; i--) {
+        values.unshift(this.sliders[i].slider('values', 0), this.sliders[i].slider('values', 1));
+      };
+      return values;
+    },
+
+    _setValues: function (index, values) {
+      var s = this.sliders[index];
+      s.slider('values', 0, values[0]);
+      s.slider('values', 1, values[1]);
+    },
 
     _newSliders: function () {
       // Remove existing sliders if any.
@@ -34,16 +49,31 @@
         .css('position', 'absolute')
         .width(self.element.width())
         .appendTo(self.element);
-    
-      var sliderOptions = getSliderOptions(o.min, o.max, values[index * 2], values[index * 2 + 1]);
 
-      sliderOptions.slide = function (event, ui) {
-        return ui.values[0] >= self.leftBoundary(index) && ui.values[1] <= self.rightBoundary(index);
-      };
+      // Get options from `sliderDefaults`, then extend them with global `options`,
+      // then with specific implementation for `values` and `slide`.
+      var sliderOptions = $.extend({}, sliderDefaults, o, {
+        values: [values[index * 2], values[index * 2 + 1]],
+        slide: function (event, ui) {
+          return self._slideHandler.call(self, event, ui, index);
+        }
+      });
 
       element.slider(sliderOptions);
 
       return element;
+    },
+
+    _slideHandler: function (event, ui, index) {
+      if (ui.values[0] < this.leftBoundary(index) || ui.values[1] > this.rightBoundary(index)) {
+        return false;
+      }
+
+      this._setValues(index, ui.values);
+      if (this.options.slide) {
+        var newUi = $.extend({}, ui, { values: this._getValues() });
+        this.options.slide(event, newUi);
+      }
     },
 
     leftBoundary: function (index) {
@@ -80,20 +110,15 @@
 
   };
 
-  var getSliderOptions = function (minValue, maxValue, startValue, endValue) {
-    return {
-      range: true,
-      step: .5,
-      min: minValue,
-      max: maxValue,
-      values: [startValue, endValue]
-    };
+  var sliderDefaults = {
+    range: true
   };
 
   var defaults = {
     total: 2,
     min: 0,
     max: 24,
+    step: 1,
     values: {
       1: [8.5, 19],
       2: [8.5, 13, 14, 19],
