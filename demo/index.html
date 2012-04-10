@@ -32,6 +32,9 @@
 
   <div id="content" class="container">
     
+
+    <!-- Demo 1 -->
+
     <div class="demo-unit">
       <h2>Basic example</h2>
 
@@ -41,23 +44,43 @@
       <div id="demo-1" class="multi-slider"></div>
     </div>
 
+    <!-- Demo 2 -->
+
     <div class="demo-unit">
-      <h2>Change total number of sliders</h2>
+      <h2>Display values</h2>
 
-<pre><code>var demo2Slider = $('#demo-2').multiSlider({total: 1});
-
-$('#demo-2-select').change(function () {
-  demo2Slider.option('total', $(this).val());
+<pre><code>$('#demo-2').multiSlider({
+  total: 2,
+  slide: function (event, ui) {
+    $('#demo-2-values').html(ui.values.join(', '));
+  }
 });
 </code></pre>
 
-      <select id="demo-2-select">
+      <p>values: <span id="demo-2-values"></span></p>
+      <div id="demo-2" class="multi-slider"></div>
+
+    </div>
+
+    <!-- Demo 3 -->
+
+    <div class="demo-unit">
+      <h2>Change total number of sliders</h2>
+
+<pre><code>var demoSlider = $('#demo-3').multiSlider({total: 1});
+
+$('#demo-3-select').change(function () {
+  demoSlider.option('total', $(this).val());
+});
+</code></pre>
+
+      <select id="demo-3-select">
         <option value="1">1</option>
         <option value="2">2</option>
         <option value="3">3</option>
       </select>
 
-      <div id="demo-2" class="multi-slider"></div>
+      <div id="demo-3" class="multi-slider"></div>
     </div>
 
   </div>
