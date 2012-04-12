@@ -4,6 +4,12 @@
 // Released under the MIT license
 (function ($) {
 
+  var overlap = function (element, value, onLeft) {
+    if (!element) return false;
+    var boundaryValue = element.slider('option', 'values')[onLeft ? 1 : 0];
+    return onLeft ? value < boundaryValue : value > boundaryValue;
+  };
+
   function MultiSlider(element, options) {
     this.element = element;
     this.options = options;
@@ -66,7 +72,8 @@
       var sliderOptions = $.extend({}, sliderDefaults, o, {
         values: [values[index * 2], values[index * 2 + 1]],
         slide: function (event, ui) {
-          return self._slideHandler.call(self, event, ui, index);
+          // Here, `this` refers to a slider element.
+          return self._slideHandler.call(self, event, ui, $(this));
         }
       });
 
@@ -75,26 +82,16 @@
       return element;
     },
 
-    _slideHandler: function (event, ui, index) {
-      if (ui.values[0] < this.leftBoundary(index) || ui.values[1] > this.rightBoundary(index)) {
+    _slideHandler: function (event, ui, element) {
+      if (overlap(element.prev(), ui.values[0], true) || overlap(element.next(), ui.values[1], false)) {
         return false;
       }
 
-      this._setValues(index, ui.values);
+      this._setValues(element.index(), ui.values);
       if (this.options.slide) {
         var newUi = $.extend({}, ui, { values: this._getValues() });
         this.options.slide(event, newUi);
       }
-    },
-
-    leftBoundary: function (index) {
-      var element = this.sliders[index - 1];
-      return element ? element.slider('option', 'values')[1] : this.options.min;
-    },
-
-    rightBoundary: function (index) {
-      var element = this.sliders[index + 1];
-      return element ? element.slider('option', 'values')[0] : this.options.max;
     },
 
     option: function (name, value) {
