@@ -26,7 +26,7 @@
       <a href="" class="brand">multiSlider.js</a>
     </div>
     <div class="container">
-      <p>A jQuery plugin allowing various sliders in the same track. By <a href="http://blog.ippon.fr" class="ippon">Ippon</a>.</p>
+      <p>A jQuery plugin allowing various sliders in the same track. By <a href="http://blog.ippon.fr" class="ippon">Ippon Technologies</a>.</p>
     </div>
   </div>
 
@@ -81,6 +81,35 @@ $('#demo-3-select').change(function () {
       </select>
 
       <div id="demo-3" class="multi-slider"></div>
+    </div>
+
+    <!-- Demo 4 -->
+
+    <div class="demo-unit">
+      <h2>Change sliders' values</h2>
+
+<pre><code>var demo4Slider = $('#demo-4').multiSlider({total: 2});
+
+demo4Slider.option('slide', function (event, ui) {
+  $('input.input').each(function (index) {
+    $(this).val(ui.values[index]);
+  });
+});
+
+$('input.input').change(function () {
+  var $input = $(this);
+  demo4Slider.value($input.index(), $input.val());
+});
+</code></pre>
+      
+      <div>
+        <input id="demo-4-input-1" class="input" type="text">
+        <input id="demo-4-input-2" class="input" type="text">
+        <input id="demo-4-input-3" class="input" type="text">
+        <input id="demo-4-input-4" class="input" type="text">
+      </div>
+      
+      <div id="demo-4" class="multi-slider"></div>
     </div>
 
   </div>

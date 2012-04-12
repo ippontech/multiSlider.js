@@ -82,6 +82,10 @@ a.ippon:hover {
   padding: 20px 0;
 }
 
+.input {
+  width: 50px;
+}
+
 
 .ui-slider {
   height: 10px;

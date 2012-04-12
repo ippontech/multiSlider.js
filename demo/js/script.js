@@ -12,14 +12,24 @@ $(function() {
   });
 
   // Demo 3
-  var demo2Slider = $('#demo-3').multiSlider({total: 1});
+  var demo3Slider = $('#demo-3').multiSlider({total: 1});
   
   $('#demo-3-select').change(function () {
-    demo2Slider.option('total', $(this).val());
+    demo3Slider.option('total', $(this).val());
   });
-    
+  
+  // Demo 4
+  var demo4Slider = $('#demo-4').multiSlider({total: 2});
 
-/*multiSlider.option('slide', function (event, ui) {
-  $('#demo-3-values').html(formatTimeDisplay(ui.values));
-});*/
+  demo4Slider.option('slide', function (event, ui) {
+    $('input.input').each(function (index) {
+      $(this).val(ui.values[index]);
+    });
+  });
+
+  $('input.input').change(function () {
+    var $input = $(this);
+    demo4Slider.value($input.index(), $input.val());
+  });
+
 });
