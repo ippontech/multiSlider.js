@@ -25,7 +25,9 @@
   function MultiSlider(element, options) {
     this.element = element;
     this.options = options;
-    this.values = createDefaultValues(options);
+    if (!this.options.values) {
+      this.options.values = createDefaultValues(options);
+    }
     this._createSliders();
   }
 
@@ -47,7 +49,7 @@
     _newSlider: function (index) {
       var self = this,
         o = self.options,
-        values = self.values;
+        values = o.values;
 
       var element = $('<div/>')
         .css('position', 'absolute')
@@ -70,8 +72,8 @@
     },
 
     _updateValues: function (index, sliderValues) {
-      this.values[2 * index] = sliderValues[0];
-      this.values[2 * index + 1] = sliderValues[1];
+      this.options.values[2 * index] = sliderValues[0];
+      this.options.values[2 * index + 1] = sliderValues[1];
     },
 
     _slideHandler: function (event, ui, element) {
@@ -82,7 +84,7 @@
       this._updateValues(element.index(), ui.values);
 
       if (this.options.slide) {
-        var newUi = $.extend({}, ui, { values: this.values });
+        var newUi = $.extend({}, ui, { values: this.options.values });
         this.options.slide(event, newUi);
       }
     },
@@ -101,7 +103,10 @@
       this.options[name] = value;
 
       if (name == 'total') {
-        this.values = createDefaultValues(this.options);
+        this.options.values = createDefaultValues(this.options);
+        this._createSliders();
+      }
+      else if (name == 'values') {
         this._createSliders();
       }
     },
