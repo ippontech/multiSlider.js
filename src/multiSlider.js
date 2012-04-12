@@ -2,6 +2,7 @@
 // Version 0.1
 // (c) 2012 [Ippon Technologies](www.ippon.fr)
 // Released under the MIT license
+// https://github.com/ippontech/multiSlider.js
 (function ($) {
 
   var overlap = function (element, value, onLeft) {
@@ -153,4 +154,3 @@
   };
 
 })(jQuery);
-
