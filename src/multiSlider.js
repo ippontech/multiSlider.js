@@ -16,7 +16,7 @@
     _getValues: function () {
       var values = [];
       for (var i = this.sliders.length - 1; i >= 0; i--) {
-        values.unshift(this.sliders[i].slider('values', 0), this.sliders[i].slider('values', 1));
+        values.push(this.sliders[i].slider('values', 0), this.sliders[i].slider('values', 1));
       };
       return values;
     },
@@ -25,6 +25,17 @@
       var s = this.sliders[index];
       s.slider('values', 0, values[0]);
       s.slider('values', 1, values[1]);
+    },
+
+    _createDefaultValues: function () {
+      var o = this.options,
+          length = Math.floor((o.max - o.min) / o.total),
+          values = [];
+
+      for (var v = o.min; v < o.max; v += length) {
+        values.unshift(v + o.step, v + length - o.step);
+      };
+      return values;
     },
 
     _newSliders: function () {
@@ -43,12 +54,12 @@
     _newSlider: function (index) {
       var self = this,
         o = self.options,
-        values = o.values[o.total];
+        values = self._createDefaultValues();
 
       var element = $('<div/>')
         .css('position', 'absolute')
         .width(self.element.width())
-        .appendTo(self.element);
+        .prependTo(self.element);
 
       // Get options from `sliderDefaults`, then extend them with global `options`,
       // then with specific implementation for `values` and `slide`.
@@ -118,12 +129,7 @@
     total: 2,
     min: 0,
     max: 24,
-    step: 1,
-    values: {
-      1: [8.5, 19],
-      2: [8.5, 13, 14, 19],
-      3: [3, 8, 9, 13, 14, 19]
-    }
+    step: 1
   };
 
   // Big fat jQuery plugin
