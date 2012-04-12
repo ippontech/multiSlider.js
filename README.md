@@ -54,3 +54,27 @@ Finally, MultiSlider also add the following options:
 
 - `total`: the total number of sliders in the track. This option is ignored if `values` is specified.
 
+### Available methods
+
+MultiSlider allows you to change properties after creation using the following methods:
+
+- `option(name[, value])`: generic method for setting or getting properties. 
+
+    Setter:
+
+        var ms = $('#timeline').multiSlider();
+        ms.option('total', 6);
+        ms.option('slide', function (event, ui) {});
+
+    Getter:
+
+        var total = ms.option('total');
+        var values = ms.option('values');
+
+- `value(index, newValue)`: change a single slider value based on its position in the flattened array of values.
+
+    For example, with two sliders:
+
+        var ms = $('#timeline').multiSlider({ values: [1, 5, 8, 12] });
+        ms.value(2, 10);
+        var values = ms.option('values');  // -> [1, 5, 10, 12]
