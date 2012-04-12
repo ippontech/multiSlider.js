@@ -26,12 +26,15 @@
       <a href="" class="brand">multiSlider.js</a>
     </div>
     <div class="container">
-      <p>A jQuery plugin allowing various sliders in the same track. By <a href="http://blog.ippon.fr" class="ippon">Ippon</a>.</p>
+      <p>A jQuery plugin allowing various sliders in the same track. By <a href="http://blog.ippon.fr" class="ippon">Ippon Technologies</a>.</p>
     </div>
   </div>
 
   <div id="content" class="container">
     
+
+    <!-- Demo 1 -->
+
     <div class="demo-unit">
       <h2>Basic example</h2>
 
@@ -41,23 +44,72 @@
       <div id="demo-1" class="multi-slider"></div>
     </div>
 
+    <!-- Demo 2 -->
+
     <div class="demo-unit">
-      <h2>Change total number of sliders</h2>
+      <h2>Display values</h2>
 
-<pre><code>var demo2Slider = $('#demo-2').multiSlider({total: 1});
-
-$('#demo-2-select').change(function () {
-  demo2Slider.option('total', $(this).val());
+<pre><code>$('#demo-2').multiSlider({
+  total: 2,
+  slide: function (event, ui) {
+    $('#demo-2-values').html(ui.values.join(', '));
+  }
 });
 </code></pre>
 
-      <select id="demo-2-select">
+      <p>values: <span id="demo-2-values"></span></p>
+      <div id="demo-2" class="multi-slider"></div>
+
+    </div>
+
+    <!-- Demo 3 -->
+
+    <div class="demo-unit">
+      <h2>Change total number of sliders</h2>
+
+<pre><code>var demoSlider = $('#demo-3').multiSlider({total: 1});
+
+$('#demo-3-select').change(function () {
+  demoSlider.option('total', $(this).val());
+});
+</code></pre>
+
+      <select id="demo-3-select">
         <option value="1">1</option>
         <option value="2">2</option>
         <option value="3">3</option>
       </select>
 
-      <div id="demo-2" class="multi-slider"></div>
+      <div id="demo-3" class="multi-slider"></div>
+    </div>
+
+    <!-- Demo 4 -->
+
+    <div class="demo-unit">
+      <h2>Change sliders' values</h2>
+
+<pre><code>var demo4Slider = $('#demo-4').multiSlider({total: 2});
+
+demo4Slider.option('slide', function (event, ui) {
+  $('input.input').each(function (index) {
+    $(this).val(ui.values[index]);
+  });
+});
+
+$('input.input').change(function () {
+  var $input = $(this);
+  demo4Slider.value($input.index(), $input.val());
+});
+</code></pre>
+      
+      <div>
+        <input id="demo-4-input-1" class="input" type="text">
+        <input id="demo-4-input-2" class="input" type="text">
+        <input id="demo-4-input-3" class="input" type="text">
+        <input id="demo-4-input-4" class="input" type="text">
+      </div>
+      
+      <div id="demo-4" class="multi-slider"></div>
     </div>
 
   </div>
