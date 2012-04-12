@@ -1,4 +1,4 @@
-// MultiSlider.js, multiple sliders in the same row.
+// MultiSlider.js, multiple sliders in the same track.
 // Version 0.1
 // (c) 2012 [Ippon Technologies](www.ippon.fr)
 // Released under the MIT license
@@ -10,48 +10,35 @@
     return onLeft ? value < boundaryValue : value > boundaryValue;
   };
 
+  var createDefaultValues = function (options) {
+    var length = Math.floor((options.max - options.min) / options.total),
+        values = [],
+        v = options.min;
+
+    for (; v < options.max; v += length) {
+      values.push(v + options.step, v + length - options.step);
+    }
+
+    return values;
+  };
+
   function MultiSlider(element, options) {
     this.element = element;
     this.options = options;
-    this.sliders = this._newSliders();
-    this.values = this._getValues();
+    this.values = createDefaultValues(options);
+    this._createSliders();
   }
 
   MultiSlider.prototype = {
 
-    _getValues: function () {
-      var values = [];
-      for (var i = this.sliders.length - 1; i >= 0; i--) {
-        values.push(this.sliders[i].slider('values', 0), this.sliders[i].slider('values', 1));
-      };
-      return values;
-    },
-
-    _setValues: function (index, values) {
-      var s = this.sliders[index];
-      s.slider('values', 0, values[0]);
-      s.slider('values', 1, values[1]);
-    },
-
-    _createDefaultValues: function () {
-      var o = this.options,
-          length = Math.floor((o.max - o.min) / o.total),
-          values = [];
-
-      for (var v = o.min; v < o.max; v += length) {
-        values.unshift(v + o.step, v + length - o.step);
-      };
-      return values;
-    },
-
-    _newSliders: function () {
+    _createSliders: function () {
       // Remove existing sliders if any.
       this.reset();
 
       // Add sliders.
       var sliders = [], i = 0;
       for (; i < this.options.total; i++) {
-        sliders.unshift(this._newSlider(i));
+        sliders.push(this._newSlider(i));
       }
       
       return sliders;
@@ -60,12 +47,12 @@
     _newSlider: function (index) {
       var self = this,
         o = self.options,
-        values = self._createDefaultValues();
+        values = self.values;
 
       var element = $('<div/>')
         .css('position', 'absolute')
         .width(self.element.width())
-        .prependTo(self.element);
+        .appendTo(self.element);
 
       // Get options from `sliderDefaults`, then extend them with global `options`,
       // then with specific implementation for `values` and `slide`.
@@ -82,14 +69,20 @@
       return element;
     },
 
+    _updateValues: function (index, sliderValues) {
+      this.values[2 * index] = sliderValues[0];
+      this.values[2 * index + 1] = sliderValues[1];
+    },
+
     _slideHandler: function (event, ui, element) {
       if (overlap(element.prev(), ui.values[0], true) || overlap(element.next(), ui.values[1], false)) {
         return false;
       }
 
-      this._setValues(element.index(), ui.values);
+      this._updateValues(element.index(), ui.values);
+
       if (this.options.slide) {
-        var newUi = $.extend({}, ui, { values: this._getValues() });
+        var newUi = $.extend({}, ui, { values: this.values });
         this.options.slide(event, newUi);
       }
     },
@@ -108,7 +101,8 @@
       this.options[name] = value;
 
       if (name == 'total') {
-        this.sliders = this._newSliders();
+        this.values = createDefaultValues(this.options);
+        this._createSliders();
       }
     },
 
