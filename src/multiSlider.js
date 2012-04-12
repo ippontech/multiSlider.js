@@ -51,7 +51,7 @@
       // Add sliders.
       var sliders = [], i = 0;
       for (; i < this.options.total; i++) {
-        sliders.push(this._newSlider(i));
+        sliders.unshift(this._newSlider(i));
       }
       
       return sliders;
