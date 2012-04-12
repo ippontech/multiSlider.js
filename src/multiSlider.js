@@ -111,6 +111,24 @@
       }
     },
 
+    value: function (index, v) {
+      var sliderElement = this.element.children(':eq(' + Math.floor(index / 2) + ')');
+      if (!sliderElement) {
+        return false;
+      }
+
+      v = +v;
+      if (this.options.values[index - 1] > v || this.options.values[index + 1] < v) {
+        return false;
+      }
+
+      var sliderValues = sliderElement.slider('option', 'values');
+      sliderValues[index % 2] = v;
+      sliderElement.slider('option', 'values', sliderValues);
+
+      this.options.values[index] = v;
+    },
+
     reset: function () {
       this.element.html('');
     }
